@@ -1,0 +1,151 @@
+/*modal css */
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 71;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+
+/* Modal Content/Box */
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+}
+
+
+/* The Close Button */
+
+#closeXButton {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#closeXButton:hover,
+#closeXButton:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* MY CSS */
+
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px;
+}
+
+#lbTitle {
+    text-align: center;
+    color: red;
+}
+
+.teamname {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.teamname-button {
+    background-color: goldenrod;
+    width: 70px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.teamname-name {
+    font-size: large;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stopwatch {
+    height: 80px;
+    background-color: green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkpoint {
+    width: auto;
+    height: 60px;
+    margin: 20px auto;
+    padding: 0 10px;
+    /* padding: 20px; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pass {
+    background-color: red;
+}
+
+.not-pass {
+    background-color: gainsboro;
+}
+
+.btn-child {
+    margin: 20px;
+    width: 80px;
+    height: 40px;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result {
+    padding: 0 10px;
+    background-color: indianred;
+    display: flex;
+    flex-direction: column;
+}
+
+.result-detail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-detail>h2 {
+    margin: 5px 0;
+}
+
+.save-result {
+    margin: 20px 60px;
+    background-color: #ccc;
+}

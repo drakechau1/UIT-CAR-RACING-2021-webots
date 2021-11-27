@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Scoring Windows</title>
+	<link rel="stylesheet" href="scoring_window.css">
+</head>
+
+<body>
+	<h1 id="lbTitle"> UIT CAR RACING 2021 </h1>
+
+	<!-- Select team name -->
+	<div class="teamname">
+		<div class="teamname-button" id="previous-team" onclick="LoadPreviousTeam()">Previous</div>
+		<div class="teamname-name" id="team-name">TEAM 1</div>
+		<div class="teamname-button" id="next-team" onclick="LoadNextTeam()">Next</div>
+	</div>
+
+	<!-- Buttons -->
+	<div class="btn">
+		<div class="btn-child" id="btn1" onclick="Reset()">RESET</div>
+		<div class="btn-child" id="btn1" onclick="Start()">START</div>
+		<div class="btn-child" id="btn2" onclick="Stop()">STOP</div>
+	</div>
+
+	<!-- Stopwatch-->
+	<div class="stopwatch">
+		<h1 id="stopwatch-time">00:00:00</h1>
+	</div>
+
+	<!-- Checkpoint-->
+	<div id="generate-checkpoint">
+		<!-- Auto generate checkpoint -->
+	</div>
+
+	<!-- Show result -->
+	<div class="result">
+		<div class="result-detail">
+			<h2>Total Score</h2>
+			<h2 id="result-score">0</h2>
+		</div>
+		<div class="result-detail">
+			<h2>Finish </h2>
+			<h2 id="result-finishtime">--:--:--</h2>
+		</div>
+	</div>
+
+	<!-- Phần demo, không cần css -->
+	<div class="save-result" onclick="PassedDemo()">
+		<h2 style="text-align: center;">Pass</h2>
+	</div>
+
+	<div class="save-result" onclick="SaveResult()">
+		<h2 style="text-align: center;">Save rusult to DB</h2>
+	</div>
+
+	<!-- Test receive message from supervisor -->
+	<h1 id="lbMessage">Message</h1>
+
+	<script src="scoring_window.js"></script>
+</body>
+
+</html>

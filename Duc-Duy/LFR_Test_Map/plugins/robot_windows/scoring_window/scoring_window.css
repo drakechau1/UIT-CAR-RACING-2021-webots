@@ -1,151 +1,247 @@
 /*modal css */
 
 .modal {
-    display: none;
-    /* Hidden by default */
-    position: fixed;
-    /* Stay in place */
-    z-index: 71;
-    /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0);
-    /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 71;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
 }
 
 
 /* Modal Content/Box */
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    /* Could be more or less, depending on screen size */
+  background-color: #fefefe;
+  margin: 15% auto;
+  /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  /* Could be more or less, depending on screen size */
 }
 
 
 /* The Close Button */
 
 #closeXButton {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 #closeXButton:hover,
 #closeXButton:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 
 /* MY CSS */
 
 html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color:#E8DDCB;
 }
 
 #lbTitle {
-    text-align: center;
-    color: red;
+  text-align: center;
+  color: #031634;
+  margin-top: 0px;
+  margin-bottom: 13px;
 }
 
 .teamname {
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+
 }
 
+
 .teamname-button {
-    background-color: goldenrod;
-    width: 70px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: #033649;
+  width: 30vw;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  color:white;
 }
 
 .teamname-name {
-    font-size: large;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
+  font-size: large;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stopwatch {
-    height: 80px;
-    background-color: green;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 80px;
+  background: rgb(2,0,36);
+  background: linear-gradient(124deg, rgba(2,0,36,1) 0%, rgba(3,101,100,1) 58%, rgba(139,187,187,1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 7px;
 }
 
+#generate-checkpoint .not-pass:nth-child(2) {
+  background-color: #00000028;
+}
+
+#generate-checkpoint .not-pass:nth-child(4) {
+  background-color: #00000028;
+} 
 .checkpoint {
-    width: auto;
-    height: 60px;
-    margin: 20px auto;
-    padding: 0 10px;
-    /* padding: 20px; */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  width: auto;
+  height: 60px;
+  margin: 20px auto;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
 }
 
 .pass {
-    background-color: red;
+  background-color:rgb(228, 72, 72);
+  color: white;
+
 }
 
 .not-pass {
-    background-color: gainsboro;
+  background-color: #CDB380;
 }
 
 .btn-child {
-    margin: 20px;
-    width: 80px;
-    height: 40px;
-    background-color: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin: 20px;
+  width: 80px;
+  height: 40px;
+  background-color: rgb(45, 199, 184);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: .4s ease all;
+  border-radius: 3px;
+  font-weight: bold;
+}
+.btn-child:hover {
+  background-color:rgb(0, 131, 120) ;
+  color: white;
 }
 
 .result {
-    padding: 0 10px;
-    background-color: indianred;
-    display: flex;
-    flex-direction: column;
+  padding: 0 10px;
+  background-color: #036564;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  border-radius: 5px;
 }
 
 .result-detail {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .result-detail>h2 {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 .save-result {
-    margin: 20px 60px;
-    background-color: #ccc;
+  margin: 20px 60px;
+  background-color: #ccc;
 }
+
+/* logo section */
+.logo-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  
+}
+
+.logo-section .logo-nav {
+  display: flex;
+  flex-direction: column;
+}
+.logo-section .logo-nav:nth-child(1){
+  flex:3;
+}
+.logo-section .logo-nav:nth-child(2){
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+h5 {
+  text-align: center;
+  margin:  0;
+}
+
+.logo-section .logo-nav .logo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-section .logo-nav .logo-container .to-chuc-item {
+  width:10vw ;
+  height: auto ;
+}
+.logo-section .logo-nav .logo-container .to-chuc-item img {
+  width:100%;
+  height: auto;
+}
+.logo-section .logo-nav .logo-container .dong-item {
+  width: 15vw;
+}
+.logo-section .logo-nav .logo-container .dong-item img {
+  width: 100%;
+  
+}
+.logo-section .logo-nav .logo-container .vang-item {
+  width: 20vw;
+}
+.logo-section .logo-nav .logo-container .vang-item img {
+  width: 100%;
+  
+}
+
+.logo-section .logo-nav .logo-container .hanh-item {
+  width: 15vw;
+}
+.logo-section .logo-nav .logo-container .hanh-item img {
+  width: 100%;
+  
+}
+/*end logo section */

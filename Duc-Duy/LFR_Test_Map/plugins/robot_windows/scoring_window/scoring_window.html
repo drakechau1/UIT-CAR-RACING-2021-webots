@@ -85,7 +85,7 @@
 
 	<!-- Stopwatch-->
 	<div class="stopwatch">
-		<h1 id="stopwatch-time">00:00:00</h1>
+		<h1 id="stopwatch-time">00:00.000</h1>
 	</div>
 
 	<!-- Checkpoint-->
@@ -99,12 +99,14 @@
 			<h2>Total Score</h2>
 			<h2 id="result-score">0</h2>
 		</div>
-		<div class="result-detail">
+		<!-- <div class="result-detail">
 			<h2>Finish </h2>
-			<h2 id="result-finishtime">--:--:--</h2>
-		</div>
+			<h2 id="result-finishtime">--:--.---</h2>
+		</div> -->
 	</div>
 
+	<!-- Phần demo, không cần css -->
+	<!-- Phần demo, không cần css -->
 	<!-- Phần demo, không cần css -->
 	<div class="save-result" onclick="PassedDemo()">
 		<h2 style="text-align: center;">Pass</h2>
@@ -117,7 +119,10 @@
 	<!-- Test receive message from supervisor -->
 	<h1 id="lbMessage">Message</h1>
 
+	<script src="stopwatch.js"></script>
+	<script src="test.js"></script>
 	<script src="scoring_window.js"></script>
+
 </body>
 
 </html>

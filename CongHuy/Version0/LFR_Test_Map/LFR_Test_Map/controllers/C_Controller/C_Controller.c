@@ -1,38 +1,66 @@
-/*
- * File:          my_c_controller_V2.c
- * Date:	  11/07/2021
- * Description:	  LFR using PID
- * Author:	  Cao Tuan Kiet
- * Modifications: none
- */
-
-/*
- * You may need to add include files like <webots/distance_sensor.h> or
- * <webots/motor.h>, etc.
- */
-#include <webots/robot.h>
 #include <stdio.h>
 #include <webots/robot.h>
 #include <webots/motor.h>
 #include <webots/distance_sensor.h>
+#include <webots/led.h>
+#include <webots/camera.h>
+#include <webots/supervisor.h>
+#define TIME_STEP 32
 
 #define max_gs 520 
 #define min_gs 110 
 #define max_gs_default 1000
 
-#define TIME_STEP 32
-
 WbDeviceTag gs[8];
 
 unsigned short sensors_value_org[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-short sensors_value_calc[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+short svc[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+unsigned long pre_position = 3500;
+unsigned long position = 3500;
+bool  status = false;
+int   check_cross = 0;
+float time_meet_precross = 0;
+float time_meet_cross = 0;
+int   sharp_turn = 0;
+bool  signal_turn_cross = false;
+int   pre_circle = 0;
+float time_circle = 0;
+int   stop;
+float time_stop = 0;
 
-unsigned long position = 0;
-bool status_true = false;
+int svc_max = 0, i_max = 0, pre_imax = 0;
 
-void read_sensors(void)
+double find_rad(double x1, double x2, double x3, double y1, double y2, double y3)
 {
-  status_true = false;
+  int a;
+  a = (x1*y1 + x2*y2 + x3*y3)/(sqrt(pow(x1,2)+pow(x2,2)+pow(x3,2))*sqrt(pow(y1,2)+pow(y2,2)+pow(y3,2)));
+  return acos(a);
+}
+
+void check_false(void)  //Hàm xử lý tín hiệu nhiễu
+{    
+    svc_max = 0; i_max = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        if (svc[i] > svc_max)
+        {
+            svc_max = svc[i];
+            i_max = i;
+        }
+    }
+    for (int i = i_max-1; i >= 0; i--)
+    {
+      if (svc[i] < svc[i-1]) svc[i-1] = svc[i];
+    }
+    for (int i = i_max+1; i < 8; i++)
+    {
+      if (svc[i] < svc[i+1]) svc[i+1] = svc[i];
+    }
+}
+
+void read_sensors(void)    // Hàm đọc giá trị cảm biến và xử lý lấy vị trí
+{
+  status = false;
   unsigned long sensors_average = 0;
   unsigned int sensors_sum = 0;
     
@@ -40,66 +68,150 @@ void read_sensors(void)
   {
     sensors_value_org[i] = wb_distance_sensor_get_value(gs[i]);
 
-    sensors_value_calc[i] = ((float)sensors_value_org[i]-min_gs)/(max_gs-min_gs)*max_gs_default;
+    svc[i] = ((float)sensors_value_org[i]-min_gs)/(max_gs-min_gs)*max_gs_default;
 
-    if(sensors_value_calc[i]>max_gs_default) sensors_value_calc[i]=max_gs_default;
-    if(sensors_value_calc[i]<0) sensors_value_calc[i]=0;
-    
-    if(sensors_value_calc[i]>200) status_true = true;
-    if(sensors_value_calc[i]>50)
+    if(svc[i]>max_gs_default) svc[i]=max_gs_default;
+    if(svc[i]<0) svc[i]=0;
+  }
+  
+  check_false(); // Xử lý nhiễu
+
+  for(int i = 0; i < 8; i++)
+  {
+    if(svc[i]>500) status = true;
+    if(svc[i]>500)
     {
-      sensors_average += (unsigned long)sensors_value_calc[i]*(i*max_gs_default);
-      sensors_sum += sensors_value_calc[i];
+      sensors_average += (unsigned long)svc[i]*(i*max_gs_default);
+      sensors_sum += svc[i];
     }
   }
-  if(status_true)position = sensors_average/sensors_sum; 
-  else if(position < max_gs_default*3.5)position = 0; 
-  else position = 7000; 
+  
+  if (wb_robot_get_time() - time_meet_precross > 0.64) check_cross = 0;
+  if (wb_robot_get_time() - time_meet_precross > 0.192) sharp_turn = 0;
+  if (wb_robot_get_time() - time_meet_cross > 0.128) signal_turn_cross = false;
+  if (wb_robot_get_time() - time_circle > 0.576 && pre_circle == 1) pre_circle = 0;
+  if (wb_robot_get_time() - time_circle > 1.344) pre_circle = 0;
+  if (wb_robot_get_time() - time_stop > 0.033) stop = 0;
+
+  if(status)
+  {
+    if (svc[1] > 450 && svc[3] > 450 && svc[5] < 200 && svc[6] < 200 && svc[7] < 200 && pre_circle != 2) 
+    { 
+      sharp_turn = -1; 
+      check_cross = -1;
+      time_meet_precross = wb_robot_get_time();
+      position = 3500;
+      if (pre_circle == 2) {position = 0; pre_position = 0;}
+    }
+    else if (svc[4] > 450 && svc[6] > 450 && svc[0] < 200 && svc[1] < 200 && svc[2] < 200 && pre_circle != 2) 
+    { 
+      sharp_turn = 1; 
+      check_cross = 1;
+      time_meet_precross = wb_robot_get_time();
+      position = 3500;
+      if (pre_circle == 2) {position = 0; pre_position = 0;}
+    }
+    else if (svc[1] > 450 && svc[2] > 450 && svc[5] > 450 && svc[6] > 450)
+    { 
+      signal_turn_cross = true;
+      if (check_cross == -1) position = 0;
+      else if (check_cross == 1) position = 7000;
+      else position = 3500;
+      time_meet_cross = wb_robot_get_time();
+      
+      if (pre_circle == 0 || wb_robot_get_time() - time_circle > 0.224)  pre_circle ++;
+      time_circle = wb_robot_get_time();
+      if (pre_circle == 2) position = 0;
+      
+      stop ++;
+      time_stop = wb_robot_get_time();
+    }
+
+    else 
+    { 
+      sharp_turn = 0;
+      position = sensors_average/sensors_sum;
+    }
+  }
+  else 
+  {
+    check_cross = 0;
+    if (sharp_turn == -1 || position < 2000) {position = 0; pre_position = position;}         // Mất line rẽ trái
+    else if(sharp_turn == 1 || position > 5000) {position = 7000; pre_position = position;}   // Mất line rẽ phải
+    else if (position > 2500 && position < 4500) position = 3500;                             // Mất line đi thẳng
+  }
 
 }
 
-int lfm_speed_left;
-int lfm_speed_right;
+float lfm_speed_left;
+float lfm_speed_right;
 
-long P=0, I=0, D=0, error=0, PID=0;
-float Kp=1.8;        
-float Ki=0.01009999; 
+long  P=0, I=0, D=0, error=0;
+float PID=0;
+float Kp=0.7609;         
+float Ki=0.0109;      
 float Kd=0.02;       
 
-#define avg_speed 3500
+#define avg_speed 3500 //3500
 
-void LineFollowingModule(void) 
+void LineFollowingModule(void)   // Hàm tính toán đưa ra tốc độ hợp lí
 {
-  P = position - 3500;
-  I = P + error;
-  D = P - error;
+  if (stop >= 3 && stop <= 9)
+    {
+      lfm_speed_left  = avg_speed;
+      lfm_speed_right = avg_speed;
+    }
+    else if (signal_turn_cross) 
+  {
+    if (check_cross == -1)
+    {
+      lfm_speed_left  = -avg_speed/2;
+      lfm_speed_right = avg_speed*2;
+    }
+    else if (check_cross == 1)
+    {
+      lfm_speed_left  = avg_speed*2;
+      lfm_speed_right = -avg_speed/2;
+    }
+    else if (pre_circle == 2 && wb_robot_get_time() - time_circle < 0.033)
+    {
+      //printf("%f\n",wb_robot_get_time() - time_circle);
+      lfm_speed_left  = -avg_speed/2;
+      lfm_speed_right = avg_speed*2;
+      if (wb_robot_get_time() - time_circle > 0) signal_turn_cross = false;
+      
+    }
+  }
+  else if ( ( (int)position - (int)pre_position <= 2500) && ( (int)position - (int)pre_position >= -2500) )
+  {
+    P = position - 3500;
+    I = P + error;
+    D = P - error;
 
-  PID = Kp*P + Ki*I + Kd*D;
+    PID = Kp*P + Ki*I + Kd*D;
   
-  error = P;
+    error = P;
   
-  lfm_speed_left = avg_speed + PID;
-  lfm_speed_right = avg_speed - PID;
+    lfm_speed_left = avg_speed + PID;
+    lfm_speed_right = avg_speed - PID;
+  
+    if (wb_robot_get_time() > 0.3) pre_position = position;
+    if (wb_robot_get_time() - time_circle >= 1.152 && wb_robot_get_time() - time_circle <= 1.216 && pre_circle == 2)
+    {
+      lfm_speed_left = -avg_speed/2;
+      lfm_speed_right = avg_speed*2;
+    }
+    
+  }
+ 
 }
 
-/*
- * This is the main program.
- * The arguments of the main function can be specified by the
- * "controllerArgs" field of the Robot node
- */
 int main() 
 {
-  /* necessary to initialize webots stuff */
   wb_robot_init();
-
-  /*
-   * You should declare here WbDeviceTag variables for storing
-   * robot devices like this:
-   *  WbDeviceTag my_sensor = wb_robot_get_device("my_sensor");
-   *  WbDeviceTag my_actuator = wb_robot_get_device("my_actuator");
-   */
-   
-  /* initialization */
+  WbDeviceTag camera = wb_robot_get_device("camera");
+  wb_camera_enable(camera, 64); 
+  
   char groundsensors[7];
   for (int i = 0; i < 8; i++) 
   {
@@ -117,50 +229,56 @@ int main()
   wb_motor_set_velocity(leftmotor, 0.0);
   wb_motor_set_velocity(rightmotor, 0.0);
   
+  float motor_left_speed = 0;
+  float motor_right_speed = 0;
   
-  /* main loop
-   * Perform simulation steps of TIME_STEP milliseconds
-   * and leave the loop when the simulation is over
-   */
-  while (wb_robot_step(TIME_STEP) != -1) {
-    /*
-     * Read the sensors :
-     * Enter here functions to read sensor data, like:
-     *  double val = wb_distance_sensor_get_value(my_sensor);
-     */
+  for (;;) 
+  {
+     wb_robot_step(TIME_STEP);
+     
      read_sensors();
-     int motor_left_speed = 0;
-     int motor_right_speed = 0;
+     
+     if (stop >= 15) 
+     {
+       wb_motor_set_velocity(leftmotor, 0.0);
+       wb_motor_set_velocity(rightmotor, 0.0);
+       wb_supervisor_simulation_set_mode(WB_SUPERVISOR_SIMULATION_MODE_PAUSE);
+     }
+     
+     motor_left_speed = 0;
+     motor_right_speed = 0;
 
-    /* Process sensor data here */
      LineFollowingModule();
      
      motor_left_speed = lfm_speed_left;
      motor_right_speed= lfm_speed_right;
-     if(!status_true)
+     if(!status)
     {
-      if(P == -3500)
+      if(P == -3500 || position == 0)
       {
-        motor_left_speed = -avg_speed;
-        motor_right_speed = avg_speed;
+        motor_left_speed  = -avg_speed/2;
+        motor_right_speed = avg_speed*2;
       }
-      if(P == 3500)
+      if(P == 3500 || position == 7000)
       {
-        motor_left_speed  = avg_speed;
-        motor_right_speed = -avg_speed;
+        motor_left_speed  = avg_speed*2;
+        motor_right_speed = -avg_speed/2;
       }
     }
+
+     float scale_factor = 0.01;
+     if (check_cross != 0) scale_factor = 0.005;
+     if (sharp_turn != 0) scale_factor = 0.005;
+     if (pre_circle == 1) scale_factor = 0.005;
+     if (wb_robot_get_time() < 0.3) 
+     {
+       scale_factor = 0;
+     }
+     //printf("%4d   %4d   %4d   %4d   %4d   %4d   %4d   %4d | %4d    %5d   %4d |LS: %3.3lf   LS: %3.3lf | %d  %2d  %2d  %2d  %2d  %2d |\n", svc[0], svc[1], svc[2], svc[3], svc[4], svc[5], svc[6], svc[7],(int)position,(int)P,(int)pre_position,scale_factor*motor_left_speed,scale_factor*motor_right_speed,status,check_cross,sharp_turn,signal_turn_cross,pre_circle,stop);
+     wb_motor_set_velocity(leftmotor, scale_factor*motor_left_speed);
+     wb_motor_set_velocity(rightmotor,scale_factor*motor_right_speed);
      
-     //printf("%4d   %4d   %4d   %4d   %4d   %4d   %4d   %4d   LS: %3.3lf  LS: %3.3lf \n", sensors_value_calc[0], sensors_value_calc[1], sensors_value_calc[2], sensors_value_calc[3], sensors_value_calc[4], sensors_value_calc[5], sensors_value_calc[6], sensors_value_calc[7],0.005*motor_left_speed,0.005*motor_right_speed);
-  
-     wb_motor_set_velocity(leftmotor, 0.005*motor_left_speed);
-     wb_motor_set_velocity(rightmotor,0.005*motor_right_speed);
   };
-
-  /* Enter your cleanup code here */
-
-  /* This is necessary to cleanup webots resources */
   wb_robot_cleanup();
-
   return 0;
 }

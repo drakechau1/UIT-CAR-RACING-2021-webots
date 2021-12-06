@@ -1,10 +1,14 @@
 const stopwatch_time = document.getElementById("stopwatch-time");
 const newCheckPoint = document.getElementById("generate-checkpoint");
-const result_score = document.getElementById("result-score");
-const numberOfCheckpoint = 8;
+const saveDB = document.getElementById("save-db");
+const numberOfCheckpoint = 5;
 const message = "C.02.12.45";
+
+var tameName = null;
 var totalScrore = 0;
-var finishTime = "";
+var finishTime = "00:00.000";
+
+saveDB.style.display = 'none';
 
 const watch = new Stopwatch(stopwatch_time);
 
@@ -62,16 +66,20 @@ function Reset() {
 	watch.reset();
 	ResetCheckpoint();
 	totalScrore = 0;
-	result_score.innerHTML = totalScrore;
+	finishTime = null;
+	cp_index = 1;
 	// window.robotWindow.send('3');
+	saveDB.style.display = 'none';
 }
 function LoadPreviousTeam() {
 	console.log("Previous teams");
 }
+
 function LoadNextTeam() {
 	console.log("Next teams");
 }
-function SaveResult() {
+
+function SaveResult2DB() {
 	console.log("Save result");
 }
 
@@ -81,10 +89,11 @@ function PassedDemo() {
 		totalScrore++;
 		SetCheckPointPassed(cp_index);
 		if (cp_index == numberOfCheckpoint) {
-			console.log("DONE");
+			console.log("DONE: " + finishTime);
 			watch.stop();
+			saveDB.style.display = 'block';
+			return;
 		}
-		result_score.innerHTML = totalScrore;
 		cp_index++;
 	}
 }
@@ -95,9 +104,10 @@ function SetCheckPointPassed(index) {
 	var id = "cp" + index;
 	document.getElementById(id).setAttribute("class", "checkpoint pass");
 	// update time
-	var time = stopwatch_time.innerHTML;
 	var time_id = "checkpoin-time" + index;
+	var time = stopwatch_time.innerHTML;
 	document.getElementById(time_id).innerHTML = time;
+	finishTime = time;
 }
 
 function ResetCheckpoint() {
@@ -110,4 +120,10 @@ function ResetCheckpoint() {
 		var time_id = "checkpoin-time" + index;
 		document.getElementById(time_id).innerHTML = time;
 	}
+}
+
+function OutlineDemo () {
+	watch.stop();
+	console.log("OUTLINE: " + finishTime);
+	saveDB.style.display = "block";
 }

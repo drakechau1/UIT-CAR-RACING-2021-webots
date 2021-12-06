@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Scoring Windows</title>
+	<title>UIT CAR RACING 2021</title>
 	<link rel="stylesheet" href="scoring_window.css">
 </head>
 
@@ -75,6 +75,12 @@
 		<div class="teamname-name" id="team-name">TEAM 1</div>
 		<div class="teamname-button" id="next-team" onclick="LoadNextTeam()">Next</div>
 	</div>
+	<!-- <ul>
+		<li>Danh sách 1</li>
+		<li> Danh sách 2</li>
+		<li> Danh sách 3</li>
+	  </ul> -->
+	<!--  -->
 
 	<!-- Buttons -->
 	<div class="btn">
@@ -88,21 +94,8 @@
 		<h1 id="stopwatch-time">00:00.000</h1>
 	</div>
 
-	<!-- Checkpoint-->
 	<div id="generate-checkpoint">
 		<!-- Auto generate checkpoint -->
-	</div>
-
-	<!-- Show result -->
-	<div class="result">
-		<div class="result-detail">
-			<h2>Total Score</h2>
-			<h2 id="result-score">0</h2>
-		</div>
-		<!-- <div class="result-detail">
-			<h2>Finish </h2>
-			<h2 id="result-finishtime">--:--.---</h2>
-		</div> -->
 	</div>
 
 	<!-- Phần demo, không cần css -->
@@ -112,17 +105,20 @@
 		<h2 style="text-align: center;">Pass</h2>
 	</div>
 
-	<div class="save-result" onclick="SaveResult()">
-		<h2 style="text-align: center;">Save rusult to DB</h2>
+	<div class="save-result" onclick="OutlineDemo()">
+		<h2 style="text-align: center;">Outline</h2>
+	</div>
+
+	<div class="save-result" id="save-db" onclick="SaveResult2DB()">
+		<h2 style="text-align: center;">Save rusult</h2>
 	</div>
 
 	<!-- Test receive message from supervisor -->
 	<h1 id="lbMessage">Message</h1>
 
+	<!-- Add javascript source -->
 	<script src="stopwatch.js"></script>
-	<script src="test.js"></script>
 	<script src="scoring_window.js"></script>
-
 </body>
 
 </html>

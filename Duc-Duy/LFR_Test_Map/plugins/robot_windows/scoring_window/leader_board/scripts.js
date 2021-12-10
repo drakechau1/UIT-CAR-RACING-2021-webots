@@ -1,12 +1,11 @@
-var tabs = document.querySelectorAll(".lboard_tabs ul li");
+var tabs = document.querySelectorAll(".lboard_tabs .tabs .button");
 var sinhvien = document.querySelector(".sinhvien");
 var thpt = document.querySelector(".thpt");
-var year = document.querySelector(".year");
 var items = document.querySelectorAll(".lboard_item");
 
 tabs.forEach(function(tab){
 	tab.addEventListener("click", function(){
-		var currenttab = tab.getAttribute("data-li");
+		var currenttab = tab.getAttribute("data-div");
 		
 		tabs.forEach(function(tab){
 			tab.classList.remove("active");
@@ -23,9 +22,6 @@ tabs.forEach(function(tab){
 		}
 		else if(currenttab == "thpt"){
 			thpt.style.display = "block";
-		}
-		else{
-			year.style.display = "block";
 		}
 
 	})

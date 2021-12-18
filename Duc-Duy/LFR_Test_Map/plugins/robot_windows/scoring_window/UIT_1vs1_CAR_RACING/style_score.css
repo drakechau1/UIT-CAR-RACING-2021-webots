@@ -1,0 +1,216 @@
+html,body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color:#E8DDCB;
+  }
+
+/* logo section */
+.logo-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+  }
+  
+  .logo-section .logo-nav {
+    display: flex;
+    flex-direction: column;
+  }
+  .logo-section .logo-nav:nth-child(1){
+    flex:3;
+  }
+  .logo-section .logo-nav:nth-child(2){
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  h5 {
+    text-align: center;
+    margin:  0;
+  }
+  
+  .logo-section .logo-nav .logo-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo-section .logo-nav .logo-container .to-chuc-item {
+    width:7vw ;
+    height: auto ;
+  }
+  .logo-section .logo-nav .logo-container .to-chuc-item img {
+    width:100%;
+    height: auto;
+  }
+  .logo-section .logo-nav .logo-container .dong-item {
+    width: 14vw;
+  }
+  .logo-section .logo-nav .logo-container .dong-item img {
+    width: 100%;
+    
+  }
+  .logo-section .logo-nav .logo-container .vang-item {
+    width: 20vw;
+  }
+  .logo-section .logo-nav .logo-container .vang-item img {
+    width: 100%;
+    
+  }
+  
+  .logo-section .logo-nav .logo-container .hanh-item {
+    width: 15vw;
+  }
+  .logo-section .logo-nav .logo-container .hanh-item img {
+    width: 100%;
+    
+  }
+  /*end logo section */
+
+  /* Control section */
+.control-section {
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    text-align: center;
+  }
+.control-section .control-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.previous-button,
+.next-button {
+    background-color:#033649 ;
+    color: white;
+    width: 40vw;
+    font-size: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: .3s;
+}
+.previous-button:hover,
+.next-button:hover{
+    background-color: #065f80;
+} 
+.team-name {
+    font-weight: bolder;
+    font-size: large;
+}
+.controller {
+    font-weight: lighter;
+}
+
+.swap-button, .load-button {
+    background-color:#033649 ;
+    color: white;
+    width: 17vw;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1px;
+    transition: .3s;
+}
+.swap-button:hover, .load-button:hover {
+    background-color: #065f80;
+}
+.save-button {
+    text-align: center;
+    background-color:  #036564;
+    color: white;
+    width: 17vw;
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 24px;
+    font-weight: 600;
+    transition:.3s;
+}
+.save-button:hover {
+    background-color:  #04a8a6;
+}
+  /* End Control section */
+
+  /* Checkpoint-section */
+.checkpoint-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.checkpoint {
+    width: 45vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 2px 0;
+    background-color:#CDB380 ;
+    border-radius: 3px;
+}
+.checkpoint h4 {
+    margin: 2px 2px;
+}
+#generate-checkpoint .not-pass:nth-child(even){
+    background-color: #cdb38073;
+}
+
+.pass {
+    background-color: rgba(4, 197, 100, 0.897);
+}
+
+/* nếu team thua thì sẽ chuyển sang màu xám  */
+.lost {
+    background-color: rgb(88, 88, 88);
+    color: white;
+}
+
+.result {
+    display: flex;
+    flex-direction:column;
+    background-color: #069b98 ;
+    color: white;
+    border-radius: 4px;
+}
+.result-detail {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+   
+}
+
+.result h4{
+    margin: 2px 5px;
+}
+  /* End Checkpoint-section */
+
+
+/* Control test section */
+.control-test {
+    display: flex;
+    flex-direction: row ;
+    justify-content: space-between;
+    text-align: center;
+}
+.team-a, .team-b {
+    width: 40vw;
+    
+    /* background: linear-gradient(124deg, rgba(129,84,252,1) 0%, rgba(148,0,166,1) 75%); */
+    color: white;
+}
+.team-win, .team-pass, .team-outline {
+    border-radius: 2px;
+    background-color: rgb(154, 91, 255);
+    border: 1px solid rgba(250, 247, 255, 0.712);
+    cursor: pointer;
+    transition: .3s;
+} 
+.team-win:hover, .team-pass:hover, .team-outline:hover {
+    background: linear-gradient(124deg, rgba(129,84,252,1) 0%, rgba(148,0,166,1) 75%); 
+}
+/* End Control test section */
